@@ -19,13 +19,23 @@ from similarity_analyzer import SimilarityAnalyzer
 # the main function will be called when this script is called in terminal
 # the bash command "python3 mainbot.py" will call this function
 def main():
-    # declare the global coordinator, and initialize
-    global coordinator
-    coordinator = Coordinator()
-    print("initialized coordinator ")
-    # Initialize the similarity analyzer, and add it to the coordinator
-    similarity_analyzer = SimilarityAnalyzer()
-    coordinator.similarity_analyzer = SimilarityAnalyzer()
+    while True:
+        try:
+            # declare the global coordinator, and initialize
+            global coordinator
+            coordinator = Coordinator()
+            print("initialized coordinator ")
+            # Initialize the similarity analyzer, and add it to the coordinator
+            global similarity_analyzer
+            similarity_analyzer = SimilarityAnalyzer()
+            coordinator.similarity_analyzer = SimilarityAnalyzer()
+            break
+        catch Exception as exception:
+            print("Error in setup")
+            print(exception)
+            print("will sleep for 2 hours to try to solve the problem, though time will probably not solve it by itself")
+            time.sleep(2 * 60 * 60)
+            print("has slept in setup error. will start anew")
     # create five threads. they are loops, complete with error handling, that all will continue running indefinitely
     # the two streamers
     tweet_streamer_thread = Thread(target = run_tweet_streamer)
@@ -85,7 +95,7 @@ def run_mentions_streamer():
             # print the exception and then sleep for two days
             # the sleep will reset all rate limiting
             print(exception)
-            print("will sleep for 2 hours two avoid exception in mentions streamer")
+            print("will sleep for 2 hours to avoid exception in mentions streamer")
             time.sleep(2 * 60 * 60)
             print("finished sleep after exception in mentions streamer. will now start anew")
 
