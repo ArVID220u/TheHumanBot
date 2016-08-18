@@ -1,0 +1,7 @@
+*.pyc
+setup.py
+__pycache__
+*.bak
+
+# For vim
+*.s[a-w][a-z]
