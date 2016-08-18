@@ -33,10 +33,12 @@ def main():
     response_checker_thread = Thread(target = coordinator.response_checker)
     # start the five loops simultaneously
     tweet_streamer_thread.start()
-    mentions_streamer_thread.start()
     similarity_analysis_thread.start()
     send_tweet_thread.start()
     response_checker_thread.start()
+    # only start the mentions streamer if there is a standard reply
+    if setup.STANDARD_REPLY != None:
+        mentions_streamer_thread.start()
 
 
 # this function will create the abusive_streamer, and start its filtering based on the trigger word

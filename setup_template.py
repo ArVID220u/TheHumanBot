@@ -30,6 +30,12 @@ TWITTER_USERNAME = "screen name"
 # the original tweeter, sometimes in an offensive way
 FAVOR_RESPONSES_LIKED_BY_THE_RESPONDEE = True
 
+# The reply to send to users @-mentioning the bot
+# At the moment, this is not dynamic, but maybe it should be?
+# If the bot should not reply to users @-mentioning it, set this preference to None,
+# and do not bother adding api keys for the mentions app
+STANDARD_REPLY = "standard reply"
+
 # The Twitter API keys needed to send tweets
 # Four applications are needed, so two streamers can be run simultaneously, and api calls can be made without interference
 
