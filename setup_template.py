@@ -17,6 +17,7 @@ LANGUAGE = "en"
 
 # The username of the bot, on Twitter
 # Do not include an @ sign
+# Same capitalization as on Twitter is important
 TWITTER_USERNAME = "screen name"
 
 # The Twitter API keys needed to send tweets
