@@ -20,19 +20,9 @@ class Coordinator():
 
 
 
-    # Initializtion
-    # Should set up the similarity analyzer
-    def __init__(self):
-        # set self's similarity analyzer
-        self.similarity_analyzer = SimilarityAnalyzer()
-        print("initialized similarity analyzer")
-
-
-
-
     # Getting new tweets from streamer
     # Just add them to the similarity queue, after filtering out some tweets
-    def new_tweet(tweet):
+    def new_tweet(self, tweet):
         # filter out retweets
         if tweet["text"].startswith("RT"):
             return
@@ -46,3 +36,17 @@ class Coordinator():
             return
         print("new tweet")
 
+
+
+    def similarity_analysis_loop(self):
+        print("hej")
+
+
+
+    def response_checker_loop(self):
+        print("hej")
+
+
+
+    def send_tweet_loop(self):
+        print("hej")

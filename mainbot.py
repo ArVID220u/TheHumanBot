@@ -13,6 +13,8 @@ from mentions_streamer import MentionsStreamer
 from coordinator import Coordinator
 # import setup to get search phrase and api keys
 import setup
+# import the similarity analyzer
+from similarity_analyzer import SimilarityAnalyzer
 
 # the main function will be called when this script is called in terminal
 # the bash command "python3 mainbot.py" will call this function
@@ -21,6 +23,9 @@ def main():
     global coordinator
     coordinator = Coordinator()
     print("initialized coordinator ")
+    # Initialize the similarity analyzer, and add it to the coordinator
+    similarity_analyzer = SimilarityAnalyzer()
+    coordinator.similarity_analyzer = SimilarityAnalyzer()
     # create five threads. they are loops, complete with error handling, that all will continue running indefinitely
     # the two streamers
     tweet_streamer_thread = Thread(target = run_tweet_streamer)
@@ -28,14 +33,17 @@ def main():
     # the three coordinator threads
     # they each interact by using common lists, but they never call each other
     # thus, they interact with each other, but never interfere with each other
-    similarity_analysis_thread = Thread(target = coordinator.similarity_analysis)
-    send_tweet_thread = Thread(target = coordinator.send_tweet)
-    response_checker_thread = Thread(target = coordinator.response_checker)
-    # start the five loops simultaneously
+    similarity_analysis_thread = Thread(target = coordinator.similarity_analysis_loop)
+    send_tweet_thread = Thread(target = coordinator.send_tweet_loop)
+    response_checker_thread = Thread(target = coordinator.response_checker_loop)
+    # The export data loop should ensure data is backed up (at possibly future server and at disk)
+    export_data_thread = Thread(target = similarity_analyzer.export_data_loop)
+    # start the six loops simultaneously
     tweet_streamer_thread.start()
     similarity_analysis_thread.start()
     send_tweet_thread.start()
     response_checker_thread.start()
+    export_data_thread.start()
     # only start the mentions streamer if there is a standard reply
     if setup.STANDARD_REPLY != None:
         mentions_streamer_thread.start()
