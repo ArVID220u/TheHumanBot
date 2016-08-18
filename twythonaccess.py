@@ -55,7 +55,7 @@ def authorize(twitter_app):
 
 
 # this method sends a tweet, by first checking with me
-def send_tweet(tweet, in_reply_to_status_id=0, twitter_app):
+def send_tweet(tweet, twitter_app, in_reply_to_status_id=0):
 
     # if in mentions streamer, and the number of requests are too large,
     # then return prematurely without sending the tweet,
