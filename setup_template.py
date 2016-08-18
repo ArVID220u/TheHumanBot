@@ -20,6 +20,16 @@ LANGUAGE = "en"
 # Same capitalization as on Twitter is important
 TWITTER_USERNAME = "screen name"
 
+# This is a boolean value, that deeply affects the bot's persona
+# If true: the criterion for getting added to the database, is that the response should
+#          be liked (favorited) by the respondee, i.e. the writer of the original tweet
+# If false: the response with the most likes and retweets (combined), will get added to the database
+# The true one creates a bot that will act more like the tweeter's best friend
+# That is, more supportive, generally more kind, and never offensive
+# If false, the bot will generally be more witty, and may be questioning
+# the original tweeter, sometimes in an offensive way
+FAVOR_RESPONSES_LIKED_BY_THE_RESPONDEE = True
+
 # The Twitter API keys needed to send tweets
 # Four applications are needed, so two streamers can be run simultaneously, and api calls can be made without interference
 
