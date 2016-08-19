@@ -64,6 +64,8 @@ class SimilarityAnalyzer():
         base_words_set = set(tweet_text.split(" "))
         # make a list for faster enumeration
         base_words_list = list(base_words_set)
+        # update the word frequencies dict
+        self.update_word_frequency(tweet_text.split(" "))
         # the best response and the best similarity score will be stored here
         best_response = ""
         best_similarity_score = 0
@@ -84,6 +86,7 @@ class SimilarityAnalyzer():
                 test_string = test_string.replace("\\n", "\n")
                 # if odd, then do similarity check
                 if even_or_odd_ticker == 1:
+                    even_or_odd_ticker = 0
                     # the similarity score between the base string and the test string
                     similarity_score = 0
                     # this is a tweet that should be analyzed against the base tweet
@@ -106,6 +109,7 @@ class SimilarityAnalyzer():
                             best_similarity_score = similarity_score
                             best_response = last_response
                 elif even_or_odd_ticker == 0:
+                    even_or_odd_ticker = 1
                     # update the last response
                     last_response = test_string
         # we now have the best response!
@@ -118,6 +122,30 @@ class SimilarityAnalyzer():
         similarity_ratio = best_similarity_score / max_score
         # now return the best match, and the ratio, as a tuple
         return (best_response, similarity_ratio)
+
+
+
+
+    
+    # A helper function for updating the word frequency list
+    # It also updates the max frequency
+    def update_word_frequency(self, words):
+        for word in words:
+            if word in self.word_frequency:
+                self.word_frequency[word] += 1
+            else:
+                self.word_frequency[word] = 1
+            # maybe update the max frequency
+            least_frequency = self.word_frequency[word]
+            least_frequency_index = 0
+            for index, top10_frequency in enumerate(self.ten_biggest_frequencies):
+                if top10_frequency < least_frequency:
+                    least_frequency = top10_frequency
+                    least_frequency_index = index
+            if self.word_frequency[word] > least_frequency:
+                self.ten_biggest_frequencies[least_frequency_index] = self.word_frequency[word]
+                # update the max frequency
+                self.max_frequency += self.word_frequency[word] / 10 - least_frequency / 10
 
 
 

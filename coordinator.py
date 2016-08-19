@@ -121,7 +121,6 @@ class Coordinator():
     # This function should run in its own thread, indefinitely
     # It gets tweets from the queue, and processes them to find the best response
     # If a good enough response is found, then the response and the base tweet is appended to the responses.txt
-    # also, the word frequencies of the similarity analyzer are updated
     def response_checker_loop(self):
         while True:
             try:
