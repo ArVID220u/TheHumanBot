@@ -30,7 +30,7 @@ def main():
             similarity_analyzer = SimilarityAnalyzer()
             coordinator.similarity_analyzer = SimilarityAnalyzer()
             break
-        catch Exception as exception:
+        except Exception as exception:
             print("Error in setup")
             print(exception)
             print("will sleep for 2 hours to try to solve the problem, though time will probably not solve it by itself")

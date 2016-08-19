@@ -107,7 +107,7 @@ class Coordinator():
                 # if the response checked queue has fewer than 300 elements, add this tweet, along with the current timestamp
                 if len(self.response_checker_queue) < 300:
                     self.response_checker_queue.append((datetime.utcnow(), tweet))
-            catch Exception as exception:
+            except Exception as exception:
                 # print the exception and then sleep for 2 hours
                 # the sleep will reset all rate limiting
                 print(exception)
