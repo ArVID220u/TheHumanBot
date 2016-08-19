@@ -72,6 +72,7 @@ class Coordinator():
             return
         # add to the similarity analyzer queue, if its length is less than 100 elements
         if len(self.similarity_analyzer_queue) < 100:
+            print("new tweet: " + tweet["text"])
             self.similarity_analyzer_queue.append(tweet)
 
 
@@ -91,7 +92,8 @@ class Coordinator():
                 # analyze the tweet
                 # the analyzer will return the best match tweet text, along with the similarity ratio between the tweet and its match
                 # the max length of the response text has to be 140 - 1 - length of screen name - 1, for the "@screen_name " prefix
-                best_match_response, similarity_ratio = self.similarity_analyzer.analyze_tweet(tweet["text"], max_length = 138 - len(tweet["screen_name"]))
+                best_match_response, similarity_ratio = self.similarity_analyzer.analyze_tweet(tweet["text"], max_length = 138 - len(tweet["user"]["screen_name"]))
+                print("found similar response with similarity ratio of " + str(similarity_ratio) + ": " + best_match_response)
                 # check if the similarity ratio is greater than or equal to the threshold, or not
                 if similarity_ratio >= self.similarity_threshold:
                     # yay, we can send this tweet
@@ -104,6 +106,7 @@ class Coordinator():
                     # Decrease the threshold, so as to be able to finally send some tweets
                     # Never go below 0.1
                     self.similarity_threshold = max(0.1, self.similarity_threshold - 0.01)
+                print("new threshold: " + str(self.similarity_threshold))
                 # if the response checked queue has fewer than 300 elements, add this tweet, along with the current timestamp
                 if len(self.response_checker_queue) < 300:
                     self.response_checker_queue.append((datetime.utcnow(), tweet))
@@ -132,6 +135,7 @@ class Coordinator():
                 timestamp, tweet = self.response_checker_queue.pop(0)
                 # sleep until two hours since the tweet was sent have passed
                 time.sleep(max(0, (timestamp + timedelta(hours=2) - datetime.utcnow()).total_seconds()))
+                print("response checking tweet: " + tweet["text"])
                 # great
                 # now, lets find the replies
                 # 180 calls like this one are allowed per 15 minute window
@@ -176,6 +180,7 @@ class Coordinator():
                             best_reply_like_and_retweet_count = super_count
                 # check whether the best reply is a tweet or not
                 if best_reply != None:
+                    print("did find best reply: " + best_reply["text"])
                     # yay, we have a decent reply!
                     reply_text = best_reply["text"]
                     base_text = tweet["text"]
