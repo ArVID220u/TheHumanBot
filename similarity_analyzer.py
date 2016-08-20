@@ -44,6 +44,7 @@ class SimilarityAnalyzer():
                     for freq in self.ten_biggest_frequencies:
                         self.max_frequency += freq
                     self.max_frequency /= len(self.ten_biggest_frequencies)
+                    first_line = False
                 else:
                     # The first is the word, the second is the count
                     word_count_list = line_string.split(" ")
