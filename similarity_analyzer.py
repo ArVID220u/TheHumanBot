@@ -48,7 +48,8 @@ class SimilarityAnalyzer():
                 else:
                     # The first is the word, the second is the count
                     word_count_list = line_string.split(" ")
-                    self.word_frequency[word_count_list[0]] = int(word_count_list[1])
+                    if len(word_count_list) >= 2:
+                        self.word_frequency[word_count_list[0]] = int(word_count_list[1])
 
 
 
