@@ -135,6 +135,8 @@ class SimilarityAnalyzer():
     # It also updates the max frequency
     def update_word_frequency(self, words):
         for word in words:
+            if word == "":
+                continue
             if word in self.word_frequency:
                 self.word_frequency[word] += 1
             else:
@@ -175,7 +177,7 @@ class SimilarityAnalyzer():
                     # then, each entry in the word_frequency dict should occupy one line
                     for word, count in self.word_frequency.items():
                         frequency_file.write(word + " " + str(count) + "\n")
-                print("finished writing word freuqnecies to disk. it is now (relatively) safe to halt the execution.")
+                print("finished writing word frequencies to disk. it is now (relatively) safe to halt the execution.")
             except Exception as exception:
                 print(exception)
                 print("Error in export_data_loop. will sleep for 2 hours")
