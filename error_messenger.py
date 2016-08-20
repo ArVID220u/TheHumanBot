@@ -15,4 +15,4 @@ def send_error_message(message, place):
         return
     text = "Error in " + place + ": " + str(message)
     if len(text) < 10000:
-        twythonaccess.authorize(twitter_app = TwitterApp.error_messenger).send_direct_message(screen_name = dm_name, text = text)
+        twythonaccess.authorize(twitter_app = twythonaccess.TwitterApp.error_messenger).send_direct_message(screen_name = dm_name, text = text)
