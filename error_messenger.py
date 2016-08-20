@@ -13,6 +13,6 @@ def send_error_message(message, place):
     dm_name = setup.ERROR_MESSAGE_RECIPIENT_SCREEN_NAME
     if dm_name == None:
         return
-    text = "Error in " + place + ": " + message
+    text = "Error in " + place + ": " + str(message)
     if len(text) < 10000:
         twythonaccess.authorize(twitter_app = TwitterApp.error_messenger).send_direct_message(screen_name = dm_name, text = text)
