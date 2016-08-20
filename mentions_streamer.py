@@ -28,7 +28,8 @@ class MentionsStreamer(TwythonStreamer):
 
         # reply with the standard reply
         reply = "@" + tweet["user"]["screen_name"] + " " + setup.STANDARD_REPLY
-        print("will send in reply: " + reply)
+        print("will send in reply in 10 s: " + reply)
+        time.sleep(10)
         twythonaccess.send_tweet(tweet = reply, twitter_app = twythonaccess.TwitterApp.mentions, in_reply_to_status_id = tweet["id"])
         return
 
