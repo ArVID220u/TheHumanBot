@@ -8,6 +8,8 @@ import time
 import twythonaccess
 # import setup to be able to read the persona
 import setup
+# import error messenger
+from error_messenger import send_error_message
 
 
 
@@ -126,6 +128,7 @@ class Coordinator():
                 # the sleep will reset all rate limiting
                 print(exception)
                 print("will sleep for 2 hours to avoid exception in similarity analysis loop")
+                send_error_message(exception, "similarity_analysis_loop")
                 time.sleep(2 * 60 * 60)
                 print("finished sleep after exception in similarity analysis loop. will now start anew")
 
@@ -213,6 +216,7 @@ class Coordinator():
             except Exception as exception:
                 print("oh, some error in response checker loop")
                 print(exception)
+                send_error_message(exception, "response_checker_loop")
                 print("will wait for 2 hours")
                 time.sleep(2 * 60 * 60)
                 print("has slept in response checker loop, will now start anew")
@@ -244,5 +248,6 @@ class Coordinator():
                 print("oh, some error in send tweet loop")
                 print(exception)
                 print("will wait for 2 hours")
+                send_error_message(exception, "send_tweet_loop")
                 time.sleep(2 * 60 * 60)
                 print("has slept in send tweet loop, will now start anew")

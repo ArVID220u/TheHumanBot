@@ -62,3 +62,12 @@ MENTIONS_CONSUMER_KEY = "enter your mentions twitter application consumer key"
 MENTIONS_CONSUMER_SECRET = "enter your mentions twitter application consumer secret key"
 MENTIONS_ACCESS_TOKEN = "enter your mentions twitter application access token"
 MENTIONS_ACCESS_TOKEN_SECRET = "enter your mentions twitter application secret access token"
+
+# A string indicating the screen name of a twitter user who should receive error messages via DM (again, screen name without '@')
+# Set this to None to not send error messages to anyone, and then don't bother filling in the api keys
+# Note that the recipient must either follow the bot, or have opened their DMs to all
+ERROR_MESSAGE_RECIPIENT_SCREEN_NAME = None
+ERROR_MESSAGE_CONSUMER_KEY = "if enabling error messaging, enter your error message twitter application consumer key"
+ERROR_MESSAGE_CONSUMER_SECRET = "if enabling error messaging, enter your error message twitter application consumer secret key"
+ERROR_MESSAGE_ACCESS_TOKEN = "if enabling error messaging, enter your error message twitter application access token"
+ERROR_MESSAGE_ACCESS_TOKEN_SECRET = "if enabling error messaging, enter your error message twitter application secret access token"

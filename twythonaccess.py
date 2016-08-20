@@ -21,6 +21,7 @@ class TwitterApp(Enum):
     send_tweet = 2
     response_checker = 3
     mentions = 4
+    error_messenger = 5
 
 
 # Store number of requests, so that they won't exceed the rate limit
@@ -52,6 +53,9 @@ def authorize(twitter_app):
         mentions_time_of_last_request = datetime.utcnow()
         # authorize
         return Twython(setup.MENTIONS_CONSUMER_KEY, setup.MENTIONS_CONSUMER_SECRET, setup.MENTIONS_ACCESS_TOKEN, setup.MENTIONS_ACCESS_TOKEN_SECRET)
+    elif twitter_app == TwitterApp.error_messenger:
+        # authorize
+        return Twython(setup.ERROR_MESSAGE_CONSUMER_KEY, setup.ERROR_MESSAGE_CONSUMER_SECRET, setup.ERROR_MESSAGE_ACCESS_TOKEN, setup.ERROR_MESSAGE_ACCESS_TOKEN_SECRET)
 
 
 # this method sends a tweet, by first checking with me

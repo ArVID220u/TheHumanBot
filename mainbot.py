@@ -15,6 +15,8 @@ from coordinator import Coordinator
 import setup
 # import the similarity analyzer
 from similarity_analyzer import SimilarityAnalyzer
+# import the send error message function
+from error_messenger import send_error_message
 
 # the main function will be called when this script is called in terminal
 # the bash command "python3 mainbot.py" will call this function
@@ -33,6 +35,7 @@ def main():
         except Exception as exception:
             print("Error in setup")
             print(exception)
+            send_error_message(exception, "main")
             print("will sleep for 2 hours to try to solve the problem, though time will probably not solve it by itself")
             time.sleep(2 * 60 * 60)
             print("has slept in setup error. will start anew")
@@ -75,6 +78,7 @@ def run_tweet_streamer():
             # print the exception and then sleep for 2 hours
             # the sleep will reset all rate limiting
             print(exception)
+            send_error_message(exception, "run_tweet_streamer")
             print("will sleep for 2 hours two avoid exception in tweet streamer")
             time.sleep(2 * 60 * 60)
             print("finished sleep after exception in tweet streamer. will now start anew")
@@ -95,6 +99,7 @@ def run_mentions_streamer():
             # print the exception and then sleep for two days
             # the sleep will reset all rate limiting
             print(exception)
+            send_error_message(exception, "run_mentions_streamer")
             print("will sleep for 2 hours to avoid exception in mentions streamer")
             time.sleep(2 * 60 * 60)
             print("finished sleep after exception in mentions streamer. will now start anew")

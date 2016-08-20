@@ -4,6 +4,8 @@ from twython import TwythonStreamer
 import twythonaccess
 # import setup for screen name
 import setup
+# errors!
+from error_messenger import send_error_message
 
 # the MentionsStreamer class will use the streaming api to check for new tweets.
 # It will be used for filtering all tweets containing a mention of self.
@@ -38,6 +40,7 @@ class MentionsStreamer(TwythonStreamer):
     def on_error(self, status_code, data):
         print("STREAMING API ERROR IN MENTIONSSTREAMER!")
         print("Status code:")
+        send_error_message("streaming API error, with code " + str(status_code), "MentionsStreamer.on_error")
         print(status_code)
         print("Other data:")
         print(data)

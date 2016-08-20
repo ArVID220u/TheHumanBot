@@ -1,5 +1,7 @@
 # the TweetStreamer is a subclass of TwythonStreamer
 from twython import TwythonStreamer
+# errors!
+from error_messenger import send_error_message
 
 # the TweetStreamer class will use the streaming api to check for new tweets.
 # It will be used for filtering all tweets containing the trigger word specified in setup.py
@@ -16,6 +18,7 @@ class TweetStreamer(TwythonStreamer):
         print("STREAMING API ERROR IN TWEETSTREAMER!")
         print("Status code:")
         print(status_code)
+        send_error_message("streaming API error, with code " + str(status_code), "TweetStreamer.on_error")
         print("Other data:")
         print(data)
         print("END OF ERROR MESSAGE")

@@ -1,5 +1,7 @@
 # import time for the export data loop
 import time
+# send error message
+from error_messenger import send_error_message
 
 
 
@@ -159,18 +161,25 @@ class SimilarityAnalyzer():
     # the response data and the frequency data to the server
     def export_data_loop(self):
         while True:
-            # Sleep for an hour
-            time.sleep(60 * 60)
-            # Export the data
-            # (1) write the word frequencies to the word_frequencies.txt
-            print("writing word frequencies to disk. DON'T STOP PROGRAM EXECUTION, or else information may be lost")
-            with open("word_frequencies.txt", "w") as frequency_file:
-                # first write the top 10 biggest frequnecies as the first line, joined by a space
-                frequency_file.write(" ".join(str(x) for x in self.ten_biggest_frequencies) + "\n")
-                # then, each entry in the word_frequency dict should occupy one line
-                for word, count in self.word_frequency.items():
-                    frequency_file.write(word + " " + str(count) + "\n")
-            print("finished writing word freuqnecies to disk. it is now (relatively) safe to halt the execution.")
+            try:
+                # Sleep for an hour
+                time.sleep(60 * 60)
+                # Export the data
+                # (1) write the word frequencies to the word_frequencies.txt
+                print("writing word frequencies to disk. DON'T STOP PROGRAM EXECUTION, or else information may be lost")
+                with open("word_frequencies.txt", "w") as frequency_file:
+                    # first write the top 10 biggest frequnecies as the first line, joined by a space
+                    frequency_file.write(" ".join(str(x) for x in self.ten_biggest_frequencies) + "\n")
+                    # then, each entry in the word_frequency dict should occupy one line
+                    for word, count in self.word_frequency.items():
+                        frequency_file.write(word + " " + str(count) + "\n")
+                print("finished writing word freuqnecies to disk. it is now (relatively) safe to halt the execution.")
+            except Exception as exception:
+                print(exception)
+                print("Error in export_data_loop. will sleep for 2 hours")
+                send_error_message(exception, "export_data_loop")
+                time.sleep(2 * 60 * 60)
+                print("has slept after exception in export_data_loop. will now resume")
 
 
             
