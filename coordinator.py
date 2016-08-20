@@ -109,7 +109,7 @@ class Coordinator():
                         # don't replace them if they are not beneath the threshold. this is for more unpredictability, and more humanness.
                         # if this ratio is greater than the to be sent one, but less than 0.7, then exchange them
                         for index, (to_be_sent_response, to_be_sent_to_tweet, to_be_sent_ratio) in enumerate(self.send_tweet_queue):
-                            if to_be_sent_ratio < self.similarity_threshold || (similarity_ratio < 0.7 && similarity_ratio > to_be_sent_ratio):
+                            if to_be_sent_ratio < self.similarity_threshold or (similarity_ratio < 0.7 and similarity_ratio > to_be_sent_ratio):
                                 self.send_tweet_queue[index] = (best_match_response, tweet, similarity_ratio)
                                 break
                     # Increase the threshold, in an effort to increase the accuracy of the tweets
