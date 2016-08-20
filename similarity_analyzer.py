@@ -18,7 +18,7 @@ class SimilarityAnalyzer():
     # It is used to make sense of the numbers in the word_frequency dictionary
     max_frequency = 1 # dummy value
     # a list of the ten biggest frequency counts, so as to know when to update the max_frequency
-    ten_biggest_frequencies = [1 for x in range(10)] # dummy values
+    ten_biggest_frequencies = [] #[1 for x in range(10)] # dummy values
 
 
 

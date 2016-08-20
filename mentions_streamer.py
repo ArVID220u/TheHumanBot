@@ -6,6 +6,8 @@ import twythonaccess
 import setup
 # errors!
 from error_messenger import send_error_message
+# time
+import time
 
 # the MentionsStreamer class will use the streaming api to check for new tweets.
 # It will be used for filtering all tweets containing a mention of self.
