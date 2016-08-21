@@ -78,6 +78,9 @@ class Coordinator():
             self.similarity_analyzer_queue.append(tweet)
 
 
+    # The last sent response, to not send the same response twice
+    last_sent_response = ""
+
 
     # This loop is run in its own thread, indefinitely
     # It takes the first element from the queue, analyzes it,
@@ -98,23 +101,24 @@ class Coordinator():
                 print("found similar response with similarity ratio of " + str(similarity_ratio) + ": " + best_match_response)
                 # check if the similarity ratio is greater than or equal to the threshold, or not
                 if similarity_ratio >= self.similarity_threshold:
-                    # yay, we can send this tweet
-                    # the send tweet queue should never be longer than 1 element
-                    if len(self.send_tweet_queue) < 1:
-                        self.send_tweet_queue.append((best_match_response, tweet, similarity_ratio))
-                    else:
-                        # if any tweet has a ratio lower than the current threshold,
-                        # then replace that tweet with this one
-                        # this means that even though this similarity ratio may be higher than any similarity ratio in the send tweet queue,
-                        # don't replace them if they are not beneath the threshold. this is for more unpredictability, and more humanness.
-                        # if this ratio is greater than the to be sent one, but less than 0.7, then exchange them
-                        for index, (to_be_sent_response, to_be_sent_to_tweet, to_be_sent_ratio) in enumerate(self.send_tweet_queue):
-                            if to_be_sent_ratio < self.similarity_threshold or (similarity_ratio < 0.7 and similarity_ratio > to_be_sent_ratio):
-                                self.send_tweet_queue[index] = (best_match_response, tweet, similarity_ratio)
-                                break
-                    # Increase the threshold, in an effort to increase the accuracy of the tweets
-                    # Increase it by 0.01 (if smaller than 0.9)
-                    self.similarity_threshold = min(0.9, self.similarity_threshold + 0.01)
+                    if self.last_sent_response != best_match_response:
+                        # yay, we can send this tweet
+                        # the send tweet queue should never be longer than 1 element
+                        if len(self.send_tweet_queue) < 1:
+                            self.send_tweet_queue.append((best_match_response, tweet, similarity_ratio))
+                        else:
+                            # if any tweet has a ratio lower than the current threshold,
+                            # then replace that tweet with this one
+                            # this means that even though this similarity ratio may be higher than any similarity ratio in the send tweet queue,
+                            # don't replace them if they are not beneath the threshold. this is for more unpredictability, and more humanness.
+                            # if this ratio is greater than the to be sent one, but less than 0.7, then exchange them. NOPE
+                            for index, (to_be_sent_response, to_be_sent_to_tweet, to_be_sent_ratio) in enumerate(self.send_tweet_queue):
+                                if to_be_sent_ratio < self.similarity_threshold:
+                                    self.send_tweet_queue[index] = (best_match_response, tweet, similarity_ratio)
+                                    break
+                        # Increase the threshold, in an effort to increase the accuracy of the tweets
+                        # Increase it by 0.01 (if smaller than 0.9)
+                        self.similarity_threshold = min(0.9, self.similarity_threshold + 0.01)
                 else:
                     # Decrease the threshold, so as to be able to finally send some tweets
                     # Never go below 0.2
@@ -228,7 +232,7 @@ class Coordinator():
     # It waits for 1 minute between each sent tweet, in an effort not to get rate limited
     # Apparently, 1 minute is too short a wait
     # Twitter has no strict rules on this, but try 15 minutes
-    # Try 10 minutes
+    # 10 minutes do not work
     def send_tweet_loop(self):
         while True:
             try:
@@ -238,12 +242,13 @@ class Coordinator():
                 # take the first element
                 # it is a tuple, as defined above
                 reply_text, base_tweet, similarity_ratio = self.send_tweet_queue.pop(0)
+                self.last_sent_response = reply_text
                 # add @screen_name to the reply text
                 reply_text = "@" + base_tweet["user"]["screen_name"] + " " + reply_text
                 # send the tweet
                 twythonaccess.send_tweet(reply_text, twitter_app = twythonaccess.TwitterApp.send_tweet, in_reply_to_status_id = base_tweet["id"])
-                # sleep for 10 minutes
-                time.sleep(10 * 60)
+                # sleep for 15 minutes
+                time.sleep(15 * 60)
             except Exception as exception:
                 print("oh, some error in send tweet loop")
                 print(exception)
